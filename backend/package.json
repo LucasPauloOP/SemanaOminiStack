@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-     "dev": "nodemon start index.js"
-  },
   "author": "lucas paulo",
   "license": "ISC",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
   "dependencies": {
+    "axios": "^0.19.1",
     "body": "^5.1.0",
     "express": "^4.17.1",
     "json": "^9.0.6",
+    "mongoose": "^5.8.7",
     "nodemon": "^2.0.2",
     "parse": "^2.11.0"
   }
