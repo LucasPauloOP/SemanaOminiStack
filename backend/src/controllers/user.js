@@ -33,18 +33,21 @@ module.exports = {
 	},
 
 	async updateUser(request, response) {
-		const { github_username, name, avatar_url, bio, techs } = request.body
-		const user = await User.find({ github_username }, { _id: 0 });
+		const { name, avatar_url, bio, techs } = request.body;
+		const { github_username } = request.params;
+		const user = await User.find({ github_username });
 		if (user) {
-			techs = await parseStringAsArray(techs);
-			await User.create({
+
+			if(techs)
+				techs = await parseStringAsArray(techs);
+
+			await User.updateOne({github_username},{$set:{
 				...user,
-				github_username : github_username || user.github_username,
 				name : name || user.name,
 				avatar_url : avatar_url || user.avatar_url,
 				bio : bio || user.bio,
 				techs : techs || user.techs
-			})
+			}})
 			return response.json(user);
 		}
 		else if (!user) {
@@ -54,8 +57,10 @@ module.exports = {
 	},
 
 	async deleteUser(request, response) {
+
 		const { github_username } = request.params
 		const deleteInformation = await User.deleteOne({ github_username });
+
 		if(!deleteInformation.deletedCount)
 			return response.json({status:403, message:"Não possui usuário com este github username"})
 

@@ -6,7 +6,7 @@ const searchUserControllers = require("./controllers/searchUser");
 //users
 routes.post("/users",userControllers.registerUser)
 routes.get("/users",userControllers.getAllUser);
-routes.put("/users",userControllers.updateUser);
+routes.put("/users/:github_username",userControllers.updateUser);
 routes.delete("/users/:github_username",userControllers.deleteUser);
 
 //search
