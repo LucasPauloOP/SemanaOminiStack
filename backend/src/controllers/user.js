@@ -49,7 +49,7 @@ module.exports = {
 			techs : techs || user.techs
 		}
 
-		user = await User.findOneAndUpdate({github_username},{$set:{updateData}},{new: true})
+		user = await User.findOneAndUpdate({github_username},{$set:updateData},{new: true})
 		
 		return response.json(user);
 
