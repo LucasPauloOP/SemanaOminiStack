@@ -8,7 +8,7 @@ const cors = require("cors");
 app.use(cors())
 app.use(express.json());
 app.use(routes);
-const mdbUrl = process.env.mdbUrl;
+const mdbUrl = process.env.MDB_URL;
 
 mongoose.connect(mdbUrl,
     {
