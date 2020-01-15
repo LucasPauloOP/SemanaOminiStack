@@ -43,17 +43,13 @@ module.exports = {
 		}
 
 		const updateData = {
-			...user,
 			name: name || user.name,
 			avatar_url: avatar_url || user.avatar_url,
 			bio : bio || user.bio,
 			techs : techs || user.techs
 		}
 
-		console.log("Antes de dar update",user);
-
-		user = await User.updateOne({github_username},{$set:{...user,updateData}},{new:true})
-		console.log(">>>>>",user);
+		user = await User.findOneAndUpdate({github_username},{$set:{updateData}},{new: true})
 		
 		return response.json(user);
 
