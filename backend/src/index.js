@@ -2,13 +2,15 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const routes = require("./routes");
+require('dotenv').config();
 const cors = require("cors");
 
 app.use(cors())
 app.use(express.json());
 app.use(routes);
+const mdbUrl = process.env.mdbUrl;
 
-mongoose.connect("mongodb+srv://LucasPauloDev:adminadmin@cluster0-yt2qw.mongodb.net/OminiStack?retryWrites=true&w=majority",
+mongoose.connect(mdbUrl,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
