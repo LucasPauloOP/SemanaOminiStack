@@ -33,26 +33,29 @@ module.exports = {
 	},
 
 	async updateUser(request, response) {
-		const { name, avatar_url, bio, techs } = request.body;
+		var { name, avatar_url, bio, techs } = request.body;
 		const { github_username } = request.params;
-		const user = await User.find({ github_username });
-		if (user) {
-
-			if(techs)
-				techs = await parseStringAsArray(techs);
-
-			await User.updateOne({github_username},{$set:{
-				...user,
-				name : name || user.name,
-				avatar_url : avatar_url || user.avatar_url,
-				bio : bio || user.bio,
-				techs : techs || user.techs
-			}})
-			return response.json(user);
+		var user = await User.findOne({github_username})
+		
+		if(techs)
+		{
+			techs = parseStringAsArray(techs);
 		}
-		else if (!user) {
-			return response.json({ status: 404, message: "Usuário não encontrado" })
+
+		const updateData = {
+			...user,
+			name: name || user.name,
+			avatar_url: avatar_url || user.avatar_url,
+			bio : bio || user.bio,
+			techs : techs || user.techs
 		}
+
+		console.log("Antes de dar update",user);
+
+		user = await User.updateOne({github_username},{$set:{...user,updateData}},{new:true})
+		console.log(">>>>>",user);
+		
+		return response.json(user);
 
 	},
 
