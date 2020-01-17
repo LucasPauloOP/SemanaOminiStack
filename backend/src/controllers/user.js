@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const axios = require("axios");
 const parseStringAsArray = require("../utils/parseStringAsArray");
+const { findConnnections, sendMessage } = require("../webSocket");
 
 module.exports = {
 
@@ -28,6 +29,10 @@ module.exports = {
 				techs: techsArray,
 				location
 			})
+
+			const sendSocketMessageTo = findConnnections({ latitude, longitude }, techsArray)
+			sendMessage(sendSocketMessageTo, "novo-usuário", user);
+
 			return response.json(user);
 		}
 	},
@@ -35,22 +40,21 @@ module.exports = {
 	async updateUser(request, response) {
 		var { name, avatar_url, bio, techs } = request.body;
 		const { github_username } = request.params;
-		var user = await User.findOne({github_username})
-		
-		if(techs)
-		{
+		var user = await User.findOne({ github_username })
+
+		if (techs) {
 			techs = parseStringAsArray(techs);
 		}
 
 		const updateData = {
 			name: name || user.name,
 			avatar_url: avatar_url || user.avatar_url,
-			bio : bio || user.bio,
-			techs : techs || user.techs
+			bio: bio || user.bio,
+			techs: techs || user.techs
 		}
 
-		user = await User.findOneAndUpdate({github_username},{$set:updateData},{new: true})
-		
+		user = await User.findOneAndUpdate({ github_username }, { $set: updateData }, { new: true })
+
 		return response.json(user);
 
 	},
@@ -60,11 +64,11 @@ module.exports = {
 		const { github_username } = request.params
 		const deleteInformation = await User.deleteOne({ github_username });
 
-		if(!deleteInformation.deletedCount)
-			return response.json({status:403, message:"Não possui usuário com este github username"})
+		if (!deleteInformation.deletedCount)
+			return response.json({ status: 403, message: "Não possui usuário com este github username" })
 
-		if(deleteInformation.deletedCount)
-			return response.json({status: 200, message:"Deletado com sucesso"});
+		if (deleteInformation.deletedCount)
+			return response.json({ status: 200, message: "Deletado com sucesso" });
 	}
 
 }

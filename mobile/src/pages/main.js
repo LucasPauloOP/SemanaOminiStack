@@ -4,6 +4,7 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location'
 import { MaterialIcons } from '@expo/vector-icons';
 import api from '../services/api';
+import { connect, disconnect, subscribe } from '../services/socket';
 
 function Main({ navigation }) {
 	const [currentRegion, setCurrentRegion] = React.useState(null)
@@ -17,10 +18,10 @@ function Main({ navigation }) {
 			const { granted } = await requestPermissionsAsync();
 
 			if (granted) {
-				// const { coords } = getCurrentPositionAsync({
-				// 	enableHighAccuracy: true
-				// })
-			//	const {latitude, longitude} = coords;
+				const { coords } = getCurrentPositionAsync({
+					enableHighAccuracy: true
+				})
+				console.log(">>>>>>>>>>>>>>>>>>>>>", coords);
 				setCurrentRegion({
 					latitude: -19.4408958,
 					longitude: -42.5607639,
@@ -32,14 +33,23 @@ function Main({ navigation }) {
 		loadInitialPosition()
 	}, [])
 
+	React.useEffect(()=>{
+		subscribe(user=>setUsers([...users,user]));
+	},[users])
+
 	function handleRegionChanged(region) {
-	//	console.log(region);
 		setCurrentRegion(region);
+	}
+
+	function setupWebsocket() {
+		disconnect()
+		const { latitude, longitude } = currentRegion;
+		connect(latitude, longitude, techs);
 	}
 
 	async function loadUsers() {
 		const { latitude, longitude } = currentRegion;
-		try{
+		try {
 			const response = await api.get("/search", {
 				params: {
 					latitude,
@@ -47,42 +57,43 @@ function Main({ navigation }) {
 					techs
 				}
 			})
-	
+
 			setUsers(response.data);
+			console.log("teste", response.data);
+			setupWebsocket()
 		}
-		catch(err) {
+		catch (err) {
 			console.error(err);
 		}
-	
+
 	}
 
 	if (!currentRegion) {
 		return null
 	}
-	//console.log(currentRegion);
 	return (
 		<>
 			<MapView onRegionChangeComplete={handleRegionChanged}
 				initialPosition={currentRegion} style={styles.map} >
-					{users.map(user =>(
-										<Marker
-										key={user._id} 
-										coordinate={{
-											latitude: user.location.coordinates[1],
-											longitude: user.location.coordinates[0],
-										}}>
-											<Image style={styles.avatar} source={{ uri:user.avatar_url}} />
-											<Callout onPress={() => {
-												navigation.navigate("Profile", { github_username: user.github_username })
-											}}>
-												<View style={styles.callout}>
-													<Text style={styles.userName}>{user.name}</Text>
-													<Text style={styles.userBio}>{user.bio}</Text>
-													<Text style={styles.userTechs}>{user.techs.join(",")}</Text>
-												</View>
-											</Callout>
-										</Marker>
-					))}
+				{users.map(user => (
+					<Marker
+						key={user._id}
+						coordinate={{
+							latitude: user.location.coordinates[1],
+							longitude: user.location.coordinates[0],
+						}}>
+						<Image style={styles.avatar} source={{ uri: user.avatar_url }} />
+						<Callout onPress={() => {
+							navigation.navigate("Profile", { github_username: user.github_username })
+						}}>
+							<View style={styles.callout}>
+								<Text style={styles.userName}>{user.name}</Text>
+								<Text style={styles.userBio}>{user.bio}</Text>
+								<Text style={styles.userTechs}>{user.techs.join(",")}</Text>
+							</View>
+						</Callout>
+					</Marker>
+				))}
 			</MapView>
 			<View style={styles.searchForm}>
 				<TextInput style={styles.searchFormInput}
