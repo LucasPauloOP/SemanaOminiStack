@@ -18,15 +18,16 @@ function Main({ navigation }) {
 			const { granted } = await requestPermissionsAsync();
 
 			if (granted) {
-				const { coords } = getCurrentPositionAsync({
+				const { coords } = await getCurrentPositionAsync({
 					enableHighAccuracy: true
 				})
-				console.log(">>>>>>>>>>>>>>>>>>>>>", coords);
+				const{latitude,longitude} = coords;
+				console.log(">>>>>>>>>>>>>>>>>>>>>",latitude,longitude);
 				setCurrentRegion({
-					latitude: -19.4408958,
-					longitude: -42.5607639,
-					latitudeDelta: 0.08,
-					longitudeDelta: 0.08,
+					latitude,
+					longitude,
+					latitudeDelta: 0.004,
+					longitudeDelta: 0.004,
 				})
 			}
 		}
