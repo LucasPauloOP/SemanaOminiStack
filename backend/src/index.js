@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(routes);
 const server = http.Server(app);
 setupWebSocket(server);
-const mdbUrl = process.env.MDB_URL;
+const mdbUrl = process.production.env.MDB_URL;
 
 mongoose.connect(mdbUrl,
     {
