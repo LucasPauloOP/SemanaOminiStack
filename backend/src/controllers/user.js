@@ -1,12 +1,14 @@
-const User = require("../models/User");
+const mongoose = require("mongoose");
 const axios = require("axios");
 const parseStringAsArray = require("../utils/parseStringAsArray");
 const { findConnnections, sendMessage } = require("../webSocket");
 
+const {User} = mongoose.models;
+
 module.exports = {
 
 	async getAllUser(request, response) {
-		const users = await User.find();
+		const users = await mongoose.models.User.find();
 		response.json(users);
 	},
 
