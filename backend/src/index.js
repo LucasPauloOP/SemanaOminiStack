@@ -6,14 +6,15 @@ const routes = require("./routes");
 const dotenv = require('dotenv');
 const cors = require("cors");
 const {setupWebSocket} = require("./webSocket");
-const environment = require('../' + process.env.NODE_ENV + '.env.js');
+const environment = require('./config/' + process.env.NODE_ENV + '.env.js');
 
 app.use(cors())
 app.use(express.json());
 app.use(routes);
 const server = http.Server(app);
 setupWebSocket(server);
-const mdbUrl = environment.MDB_URL;
+const mdbUrl = environment.mongo.link;
+
 
 mongoose.connect(mdbUrl,
     {

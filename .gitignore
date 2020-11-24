@@ -1,4 +1,4 @@
-backend/development.env.js
+backend/src/config/development.env.js
 backend/package-lock.json
 frontend-web/node_modules/
 frontend-web/package-lock.json
