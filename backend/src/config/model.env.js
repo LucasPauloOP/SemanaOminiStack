@@ -4,7 +4,11 @@
 
 module.exports = {
     mongo: {
-        link: 'test_1c1048d668ab153093963e79d7bfea'
+        link: 'link de conexao'
+    },
+
+    api_futebol: {
+        token: 'test_1c1048d668ab153093963e79d7bfea'
     }
 
 }
