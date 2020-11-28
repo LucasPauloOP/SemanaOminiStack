@@ -1,6 +1,7 @@
 const axios = require("axios");
 const converter = require('json-2-csv');
 const fs = require('fs');
+const environment = require('./config/' + process.env.NODE_ENV + '.env.js');
 
 const json2csvCallback = (err, csv) => {
     if (err) throw err;
@@ -14,10 +15,10 @@ const json2csvCallback = (err, csv) => {
 };
 
 module.exports = {
-    async convertCsvToJson (request, response) {
+    async getChampionship (request, response) {
         try {
             const config = {
-                headers:{Authorization:'Bearer test_1c1048d668ab153093963e79d7bfea'}
+                headers:{Authorization: environment.api_futebol.token}
             }
     
             const res = await axios.get('https://api.api-futebol.com.br/v1/campeonatos', config);
@@ -30,5 +31,7 @@ module.exports = {
         } catch (err) {
             console.log(err);
         }
-	}
+  }
+  
+  async get
 }
