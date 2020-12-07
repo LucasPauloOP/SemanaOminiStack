@@ -1,0 +1,11 @@
+id_campeonato,nome,slogam,nome_popular,status,tipo
+10,Campeonato Brasileiro,campeonato-brasileiro,Brasileirão,andamento,Pontos Corridos
+2,Copa do Brasil,copa-do-brasil,Copa do Brasil,andamento,Mata-Mata
+14,Campeonato Brasileiro Série B,campeonato-brasileiro-serie-b,Brasileirão Série B,andamento,Pontos Corridos
+6,Campeonato Carioca,campeonato-carioca,Carioca,finalizado,Misto
+13,Campeonato Catarinense,campeonato-catarinense,Catarinense,finalizado,Misto
+11,Campeonato Gaúcho,campeonato-gaucho,Gaúcho,finalizado,Misto
+12,Campeonato Mineiro,campeonato-mineiro,Mineiro,finalizado,Misto
+9,Campeonato Paulista,campeonato-paulista,Paulista,finalizado,Misto
+7,Copa Libertadores da América,copa-libertadores-da-america,Libertadores,andamento,Misto
+8,Copa Sulamericana,copa-sulamericana,Sulamericana,andamento,Mata-Mata
