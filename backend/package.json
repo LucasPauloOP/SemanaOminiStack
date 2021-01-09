@@ -9,7 +9,7 @@
     "dev": "export NODE_ENV='development' && nodemon src/index.js"
   },
   "dependencies": {
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "body": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
